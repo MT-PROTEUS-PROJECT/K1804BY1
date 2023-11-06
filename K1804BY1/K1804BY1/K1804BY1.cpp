@@ -34,6 +34,7 @@ uint8_t K1804BY1::getRA() const noexcept
 void K1804BY1::updateRA() noexcept
 {
     _ra = vsm::model::make_number(_pins_R);
+    _instance->log(("RA: " + std::to_string(_ra)).data());
 }
 
 uint8_t K1804BY1::getStack() const noexcept
@@ -78,16 +79,25 @@ VOID K1804BY1::setup(IINSTANCE *instance, IDSIMCKT *dsimckt)
     RE.init(_instance, "$RE$");
     T.init(_instance, "T");
     OE.init(_instance, "$OE$");
+
+    _last_update = 0;
+    _prev_addr = 0;
 }
 
 VOID K1804BY1::simulate(ABSTIME time, DSIMMODES mode)
 {
+    auto check_addr = 0;
     // CMK
     if (T->isposedge() && C0->isactive())
+    {
         C4.set(time, 500, updateCMK() ? SHI : SLO);
+    }
     // RA
-    if (RE->isposedge())
+    if (RE->isnegedge())
+    {
+        check_addr = 1;
         updateRA();
+    }
     // STACK
     updateStack();
 
@@ -97,7 +107,17 @@ VOID K1804BY1::simulate(ABSTIME time, DSIMMODES mode)
         return;
     }
 
+    if (time - _last_update < DELAY_NS)
+    {
+        _last_update = time;
+        return;
+    }
+
     auto src_addr = S1->isactive() + S2->isactive() * 2;
+    if (_prev_addr == src_addr && _prev_addr != check_addr)
+        return;
+
+    _instance->log(("addr: " + std::to_string(src_addr)).data());
     uint8_t res = 0;
     switch (src_addr)
     {
@@ -117,8 +137,11 @@ VOID K1804BY1::simulate(ABSTIME time, DSIMMODES mode)
         return;
     }
     res |= vsm::model::make_number(_pins_DR);
+    _cmk = res;
     
     writeRes(time, res);
+    _last_update = time;
+    _prev_addr = src_addr;
 }
 
 extern "C"

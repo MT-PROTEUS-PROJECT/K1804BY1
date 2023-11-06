@@ -13,6 +13,7 @@ private:
 	static constexpr uint8_t WORD_SIZE = 4;
 	static constexpr uint8_t MAX_VALUE = 15; // 2 ** 4 - 1
 	static constexpr uint8_t STACK_DEPTH = 4;
+	static constexpr size_t DELAY_NS = 500'000;
 
 	using io_pins = std::array<vsm::pin, WORD_SIZE>;
 private:
@@ -35,6 +36,9 @@ private:
 	// output
 	vsm::pin C4;
 	io_pins _pins_Y;
+
+	ABSTIME _last_update;
+	uint32_t _prev_addr;
 
 private:
 	uint8_t _cmk;
