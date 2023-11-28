@@ -10,7 +10,7 @@ public:
 	static constexpr DWORD MODEL_KEY = 0x00000003;
 
 private:
-	static constexpr uint8_t WORD_SIZE = 4;
+	static constexpr uint8_t WORD_SIZE = 10;
 	static constexpr uint8_t MAX_VALUE = 15; // 2 ** 4 - 1
 	static constexpr uint8_t STACK_DEPTH = 4;
 	static constexpr size_t DELAY_NS = 500'000;
@@ -43,7 +43,7 @@ private:
 private:
 	uint8_t _cmk;
 	uint8_t _ra;
-	std::stack<uint8_t> _stack;
+	std::stack<uint16_t> _stack;
 
 private:
 	uint8_t getCMK() const noexcept;

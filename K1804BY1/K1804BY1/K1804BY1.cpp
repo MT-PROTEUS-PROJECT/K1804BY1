@@ -118,7 +118,7 @@ VOID K1804BY1::simulate(ABSTIME time, DSIMMODES mode)
         return;
 
     _instance->log(("addr: " + std::to_string(src_addr)).data());
-    uint8_t res = 0;
+    uint16_t res = 0;
     switch (src_addr)
     {
     case 0:
