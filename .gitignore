@@ -4,3 +4,4 @@ build/
 Project Backups/
 Model.pdsprj.*
 *.dll
+*.json

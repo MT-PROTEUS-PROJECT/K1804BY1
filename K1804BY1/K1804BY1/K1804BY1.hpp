@@ -11,8 +11,8 @@ public:
 
 private:
 	static constexpr uint8_t WORD_SIZE = 10;
-	static constexpr uint8_t MAX_VALUE = 15; // 2 ** 4 - 1
-	static constexpr uint8_t STACK_DEPTH = 4;
+	static constexpr uint16_t MAX_VALUE = 1023; // 2 ** 10 - 1
+	static constexpr uint8_t STACK_DEPTH = 64;
 	static constexpr size_t DELAY_NS = 500'000;
 
 	using io_pins = std::array<vsm::pin, WORD_SIZE>;
@@ -38,24 +38,24 @@ private:
 	io_pins _pins_Y;
 
 	ABSTIME _last_update;
-	uint32_t _prev_addr;
+	int32_t _last_popped_value;
 
 private:
-	uint8_t _cmk;
-	uint8_t _ra;
+	uint16_t _cmk;
+	uint16_t _ra;
 	std::stack<uint16_t> _stack;
 
 private:
-	uint8_t getCMK() const noexcept;
+	uint16_t getCMK() const noexcept;
 	bool updateCMK() noexcept; // true if overflow
 
-	uint8_t getRA() const noexcept;
+	uint16_t getRA() const noexcept;
 	void updateRA() noexcept;
 
-	uint8_t getStack() const noexcept;
+	uint16_t getStack() noexcept;
 	void updateStack();
 
-	void writeRes(ABSTIME time, uint8_t res);
+	void writeRes(ABSTIME time, uint16_t res);
 
 public:
 	K1804BY1();
