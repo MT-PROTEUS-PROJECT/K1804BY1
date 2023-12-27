@@ -89,7 +89,6 @@ VOID K1804BY1::setup(IINSTANCE *instance, IDSIMCKT *dsimckt)
     OE.init(_instance, "$OE$");
 
     _last_update = 0;
-    _prev_addr = 0;
 }
 
 VOID K1804BY1::simulate(ABSTIME time, DSIMMODES mode)
