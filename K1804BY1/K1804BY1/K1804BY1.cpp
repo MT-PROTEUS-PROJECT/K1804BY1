@@ -3,7 +3,7 @@
 #include <limits>
 #include <bitset>
 
-K1804BY1::K1804BY1() : _prev_addr(0), _prev_stack_state(0), _last_popped_value(-1), _cmk(0), _ra(0)
+K1804BY1::K1804BY1() : _last_popped_value(-1), _cmk(0), _ra(0)
 {
     static_assert(std::numeric_limits<decltype(_cmk)>::max() >= 2 * MAX_VALUE);
     static_assert(std::numeric_limits<decltype(_ra)>::max() >= MAX_VALUE);
